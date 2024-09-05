@@ -23,10 +23,10 @@ def loading():
     llm=ChatGroq(model="llama3-8b-8192",temperature=0)
     
     def format_docs(docs):
-        str1="\n\n".join(doc.page_content for doc in docs)
+        str1="\n\n".join(doc[0].page_content for doc in docs)
         return str1[0:10000]
     def source(docs):
-        return "\n\n".join(str(doc.metadata['page']) for doc in docs)
+        return "\n\n".join(str(doc[0].metadata['page']) for doc in docs)
     
     ##query generation
     template = """You are an AI language model assistant. Your task is to generate five 
@@ -43,12 +43,24 @@ def loading():
     )
 
     #retrieval chain
-    def get_unique_union(documents: list[list]):
-        flattened_docs=[dumps(doc) for sublist in documents for doc in sublist]
-        unique_docs=list(set(flattened_docs))
-        return [loads(doc) for doc in unique_docs]
+    def reciprocal_rank_fusion(results: list[list], k=60):
+        fused_scores = {}
+        for docs in results:
+            for rank, doc in enumerate(docs):
+                doc_str = dumps(doc)
+                if doc_str not in fused_scores:
+                    fused_scores[doc_str] = 0
+                previous_score = fused_scores[doc_str]
+                fused_scores[doc_str] += 1 / (rank + k)
+        reranked_results = [
+            (loads(doc), score)
+            for doc, score in sorted(fused_scores.items(), key=lambda x: x[1], reverse=True)
+        ]
 
-    retrieval_chain=generate_queries|retriever.map()|get_unique_union
+        print(reranked_results)
+        return reranked_results
+
+    retrieval_chain=generate_queries|retriever.map()|reciprocal_rank_fusion
     
 
     #rag_chain
@@ -59,8 +71,8 @@ def loading():
                                                  Do not cite the context directly but rather explain it in simple words. 
                                                  Do not use any knowledge which is not given in the context. 
                                                  If the question is not relevant to the legal system, do not answer the question and ask the user to give a relevant prompt
-                                                 Also list the pages used.(Neccessary). 
-                                                 The pages used are {page}\n Question:{question} \n Context:{context}''')
+                                                 Also list the pages used.(Neccessary).
+                                                 The pages used are {page}\n Question:{question} \n Context:{context}\n''')
     rag_chain=(
         {"context": retrieval_chain | format_docs, "question": RunnablePassthrough(),"page":retrieval_chain|source}
         | prompt_template
