@@ -1,0 +1,55 @@
+import os
+from groq import Groq
+
+os.environ["GROQ_API_KEY"] = "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"
+
+api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    raise EnvironmentError("GROQ_API_KEY environment variable is not set.")
+
+# Initialize the Groq client with your API key
+client = Groq(api_key=api_key)
+
+def get_groq_response(input_text, no_words, blog_style):
+    # Construct the prompt based on user input
+    prompt = f"Write a blog for {blog_style} job profile for a topic '{input_text}' within {no_words} words."
+
+    # Make the request to the Groq API
+    try:
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant."
+                },
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+            model="meta-llama/Meta-Llama-3.1-8B-Instruct"  # Use your specific model if needed
+        )
+        
+        # Extract the generated text from the response
+        generated_text = chat_completion.choices[0].message.content
+        return generated_text
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+def main():
+    print("Welcome to the Groq Blog Generator!")
+    
+    # Take user input
+    input_text = input("Enter the topic: ")
+    no_words = int(input("Enter the number of words (50-500): "))
+    blog_style = input("Choose the blog style (Normal User, Judicial Related Services): ")
+
+    # Generate the blog
+    blog = get_groq_response(input_text, no_words, blog_style)
+    
+    # Print the generated blog
+    print("\nGenerated Blog:")
+    print(blog)
+
+if __name__ == "_main_":
+    main()
