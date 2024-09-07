@@ -1,0 +1,39 @@
+.navbar {
+    width: 200px;  
+    background-color: #46211A;
+    color: white;
+    height: 100vh;  
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    left: 0;
+  }
+  
+.logo {
+    margin-bottom: 30px;
+  }
+  
+.logo img {
+    width: 100%;
+  }
+  
+.nav-links ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+.nav-links li {
+    margin: 20px 0;
+  }
+  
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    transition: 0.3s;
+  }
+  
+.nav-links a:hover {
+    color: #A43820;
+  }
