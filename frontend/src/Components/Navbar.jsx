@@ -10,7 +10,7 @@ const Navbar = () => {
         </div>
       </Link>
       <div className=''>
-        <Link to="/chatbot" className='mr-8 hover:bg-gray-100 hover:text-secondary hover:underline p-2 border-stone-100 rounded-lg'>Chat Now</Link>
+        <Link to="/chatbot" className='mr-2 hover:bg-gray-100 hover:text-secondary hover:underline p-2 border-stone-100 rounded-lg'>Chat Now</Link>
       </div>
     </div>
   )
