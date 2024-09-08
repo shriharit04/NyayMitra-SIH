@@ -19,10 +19,10 @@ function Chatbot() {
       const userMessage = input;
       setInput('');
       try {
-        const response = await axios.get('/api/chatbot/prompt', {
-          params: { prompt: input }
+        const response = await axios.post('/api/chatbot/prompt', {
+          prompt: input 
         });
-        const botResponse = response.data.data;
+        const botResponse = response.data.response;
   
         // Update chat state with user message and bot response
         setChat([...chat, { user: userMessage }, { bot: botResponse }]);
