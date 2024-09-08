@@ -1,5 +1,5 @@
 import os
-#os.environ['GROQ_API_KEY']=os.getenv("GROQ_API_KEY")
+os.environ['GROQ_API_KEY']=  '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'           #os.getenv("GROQ_API_KEY")
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from langchain_groq import ChatGroq
 from langchain_community.embeddings import HuggingFaceBgeEmbeddings
@@ -22,7 +22,7 @@ def loading():
     model_kwargs={"device":"cpu"}
     encode_kwargs={"normalize_embeddings":True}
     hf_embeddings=HuggingFaceBgeEmbeddings(model_name=model_name,model_kwargs=model_kwargs,encode_kwargs=encode_kwargs)
-    vectorstore=FAISS.load_local("faiss_index_2",hf_embeddings,allow_dangerous_deserialization=True)
+    vectorstore=FAISS.load_local("Chatbot/faiss_index_2",hf_embeddings,allow_dangerous_deserialization=True)
     retriever=vectorstore.as_retriever()
     llm=ChatGroq(model="llama3-8b-8192",temperature=0)
     

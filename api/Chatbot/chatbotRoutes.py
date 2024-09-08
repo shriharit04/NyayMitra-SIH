@@ -38,6 +38,6 @@ def prompt():
 @chatbot_bp.route('/prompt', methods=['POST'])
 def handle_query():
     data = request.json
-    query = data.get('query', '')
+    query = data.get('prompt', '')
     response = generate(rag_chain, query)
     return jsonify({"response": response}), 200
