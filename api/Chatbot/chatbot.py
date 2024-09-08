@@ -1,5 +1,5 @@
 import os
-os.environ['GROQ_API_KEY']=  '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'           #os.getenv("GROQ_API_KEY")
+os.environ['GROQ_API_KEY']= os.getenv("GROQ_API_KEY")
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from langchain_groq import ChatGroq
 from langchain_community.embeddings import HuggingFaceBgeEmbeddings
