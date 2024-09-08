@@ -8,7 +8,7 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})  # Allow all origins for /api
 # Register the Blueprint with a URL prefix
 app.register_blueprint(chatbot_bp,url_prefix='/api/chatbot')
 
-@app.route('/api/data', methods=['GET'])
+@app.route('/', methods=['GET'])
 def get_data():
     data = {'message': 'Hello from Flask!'}
     return jsonify(data)
