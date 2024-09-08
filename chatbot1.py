@@ -14,15 +14,19 @@ from langchain_core.prompts import ChatPromptTemplate
 warnings.filterwarnings('ignore')
 # from chromadb import Documents, EmbeddingFunction, Embeddings
 from langchain.memory import ChatMessageHistory
-
+from langchain.embeddings import HuggingFaceEmbeddings
+from sentence_transformers import SentenceTransformer
 history = ChatMessageHistory()
 
 def loading():
-    model_name="BAAI/bge-small-en"
-    model_kwargs={"device":"cpu"}
-    encode_kwargs={"normalize_embeddings":True}
-    hf_embeddings=HuggingFaceBgeEmbeddings(model_name=model_name,model_kwargs=model_kwargs,encode_kwargs=encode_kwargs)
-    vectorstore=FAISS.load_local("faiss_index_2",hf_embeddings,allow_dangerous_deserialization=True)
+    # model_name="BAAI/bge-small-en"
+    # model_kwargs={"device":"cpu"}
+    # encode_kwargs={"normalize_embeddings":True}
+    # hf_embeddings=HuggingFaceBgeEmbeddings(model_name=model_name,model_kwargs=model_kwargs,encode_kwargs=encode_kwargs)
+    model_name = "sentence-transformers/all-MiniLM-L6-v2"
+    model = SentenceTransformer(model_name)
+    embeddings = HuggingFaceEmbeddings(model_name=model_name)
+    vectorstore=FAISS.load_local("Vectordatabases/BNS_index_1",embeddings,allow_dangerous_deserialization=True)
     retriever=vectorstore.as_retriever()
     llm=ChatGroq(model="llama3-8b-8192",temperature=0)
     
@@ -82,18 +86,29 @@ def loading():
     def get_history(question):
         return str(history.messages)
     #rag_chain
-    prompt_template=PromptTemplate.from_template('''You are a legal expert who answers queries asked by a customer.
-                                                    Start by welcoming the user with a namaste if this is the first query.
-                                                    Talk in a very polite and friendly tone. 
-                                                    Answer the following question based on the given context.
-                                                    Never mention about the context in the output. The context is just for your reference.
-                                                    You are a RAG system and you should not mention about the context given in any circumstance.
-                                                    Do not cite the context directly but rather explain it in simple words.
-                                                    If user asks for a summary of the previous conversations, please provide it 
-                                                    If the question is not relevant to the legal system, do not answer the question and ask the user to give a relevant prompt
-                                                    Also list the pages used.(Neccessary).
-                                                    If the user refers to something only check the chat history for reference. Do not use the context in this case.
-                                                    Always refer to the previous conversations for better understanding of what the user is asking.
+    prompt_template=PromptTemplate.from_template('''Welcome Message:
+
+                                                "Namaste! I’m here to assist with your legal questions. Feel free to ask me anything related to legal matters."
+
+                                                Response Instructions:
+
+                                                Legal Queries:
+
+                                                Provide clear, structured answers based on relevant laws, legal principles, or case precedents.
+                                                If the user's query pertains to specific individuals or scenarios, refer to the chat history to ensure accurate context.
+                                                Clarifying Ambiguities:
+
+                                                If the query uses general terms like "him/her" and it's unclear who is being referred to, ask the user for additional details or context.
+                                                Irrelevant Questions:
+
+                                                Politely inform the user if their question is not related to legal matters and gently ask them to provide a relevant legal query.
+                                                Summarizing Conversations:
+
+                                                If requested, provide a summary of previous conversations in a clear and concise manner, focusing on key points.
+                                                Note:
+
+                                                Avoid mentioning specific context or technical details. Instead, focus on delivering helpful and accurate legal guidance.
+
                                                     The pages used are {page}\n Question:{question} \n Context:{context}\n
                                                 
                                                     These are the previous conversations: {chat_history}''')
