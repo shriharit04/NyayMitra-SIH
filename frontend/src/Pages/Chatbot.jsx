@@ -5,6 +5,7 @@ function Chatbot() {
   const [chat, setChat] = useState([]);
   const [input, setInput] = useState('');
   const textareaRef = useRef(null);
+  const chatContainerRef = useRef(null); // Ref for chat container
 
   useEffect(() => {
     // Adjust the textarea height based on content
@@ -12,7 +13,12 @@ function Chatbot() {
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  }, [input]);
+
+    // Scroll to the bottom of the chat when a new message is added
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [input, chat]); // Added chat as a dependency
 
   const handleNewPrompt = async (e) => {
     e.preventDefault();
@@ -38,8 +44,10 @@ function Chatbot() {
   return (
     <div className='w-full h-full bg-gray-900 m-0 p-0'>
       <div className="bg-gray-950 p-4 rounded-lg shadow-lg max-w-4xl mx-auto flex flex-col h-screen w-3/5">
-
-        <div className="flex flex-col flex-grow overflow-y-auto mb-4">
+        <div 
+          ref={chatContainerRef} // Attach ref to chat container
+          className="flex flex-col flex-grow overflow-y-auto mb-4 pt-[120px] hide-scrollbar" // Added class to hide scrollbar
+        >
           {/* Placeholder for empty chat */}
           {chat.length === 0 ? (
             <div className="flex justify-center items-center h-full">
@@ -51,7 +59,7 @@ function Chatbot() {
           ) : (
             chat.map((message, index) => (
               <div key={index} className={`mb-2 ${message.user ? 'text-right' : 'text-left'}`}>
-                <div className={`inline-block px-4 py-2 rounded-lg ${message.user ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}`}>
+                <div className={`inline-block px-4 py-2 rounded-lg ${message.user ? 'bg-purple-800 text-white' : 'bg-gray-300 text-gray-800'}`}>
                   {message.user || message.bot}
                 </div>
               </div>
@@ -68,8 +76,7 @@ function Chatbot() {
             placeholder="Ask your legal question..."
             className="bg-gray-900 text-white border border-gray-900 rounded-full p-2 resize-none overflow-hidden flex-grow mr-2"
           />
-          <button type='submit'
-          className='relative py-2 px-3 rounded-lg font-medium text-sm bg-gradient-to-b from-[#190D2E] to-[#4a208a] shadow-[0px_0px_12px_#8c45ff]'>
+          <button type='submit' className='relative py-2 px-3 rounded-lg font-medium text-sm bg-gradient-to-b from-[#190D2E] to-[#4a208a] shadow-[0px_0px_12px_#8c45ff]'>
             <div className='absolute inset-0'>
               <div className="border rounded-lg border-white/20 absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent)]"></div>
               <div className="border rounded-lg border-white/40 absolute inset-0 [mask-image:linear-gradient(to_top,black,transparent)]"></div>
