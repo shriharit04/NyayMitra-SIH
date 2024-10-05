@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Apply Tailwind utility classes directly on the body */
+body {
+    background-color: #121212; /* Equivalent to bg-gray-900 */
+    color: #f7f7f7; 
+    padding: 0;
+    margin: 0;
+}

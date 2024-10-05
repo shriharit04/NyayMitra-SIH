@@ -13,12 +13,16 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/chatbot' element={<Chatbot/>}/>
-      </Routes>
+
+      <div className="">
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/chatbot' element={<Chatbot />} />
+          {/* <Route path='/chatbotnew' element={<ChatbotNew />} /> */}
+        </Routes>
+      </div>
     </BrowserRouter>
   )
 }
-  export default App
+export default App

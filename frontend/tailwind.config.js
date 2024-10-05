@@ -11,6 +11,7 @@ export default {
         forange : '#FB923C',
         primary: '#064635',
         secondary: '#080808',
+        purp : '#190D2E'
       }
     },
   },

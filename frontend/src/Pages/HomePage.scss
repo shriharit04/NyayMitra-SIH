@@ -20,37 +20,6 @@ body {
   min-height: 100vh;
 }
 
-.hero-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 4rem 2rem;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  width: 100%; /* Full width */
-  max-width: 1200px; /* Optional: to limit the maximum width */
-  margin: 0 auto; /* Center the section */
-}
-
-.hero-section img {
-  max-width: 100%;
-  height: auto;
-}
-
-.hero-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.hero-description {
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
-}
-
 .button-container {
   display: flex;
   justify-content: center;
