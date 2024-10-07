@@ -27,6 +27,8 @@ python venv venv  ???
 Windows -> \venv\Scripts\activate
 pip install -r requirements.txt
 ```
+<img width="1268" alt="nyaymitr" src="https://github.com/user-attachments/assets/08021602-9ee9-4f3f-8844-364ebcecbfec">
+
 
 
 
