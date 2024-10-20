@@ -10,8 +10,11 @@
 - **Contextual Understanding**: Capable of understanding the context of legal queries, retrieving relevant documents, case law, and statutes.
 - **Scalable Architecture**: Easily extendable to integrate more databases or additional legal domains.
 - **Vector Database Integration**: Store and retrieve data using vector embeddings to efficiently handle large-scale legal datasets.
-  
 
+**Install Dependencies**
+    ```bash
+    pip install -r requirements.txt
+    ```
 # Frontend 
 
 ## .env
