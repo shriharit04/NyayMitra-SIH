@@ -12,7 +12,7 @@
 - **Vector Database Integration**: Store and retrieve data using vector embeddings to efficiently handle large-scale legal datasets.
 
 **Install Dependencies**
-    ```bash
+
     pip install -r requirements.txt
     ```
 # Frontend 
